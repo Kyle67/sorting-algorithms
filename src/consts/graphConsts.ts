@@ -1,0 +1,1 @@
+export const sortingDelay = 1000;

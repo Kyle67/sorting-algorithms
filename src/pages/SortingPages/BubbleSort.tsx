@@ -30,10 +30,8 @@ const BubbleSort = () => {
     "rgba(255, 99, 132, 1)",
   ]);
   const [data, setData] = useState([65, 29, 80]);
-
-  useEffect(() => {
-    alert(data);
-  }, [data]);
+  const [key, setKey] = useState(0);
+  const [counter, setCounter] = useState(0);
 
   const labels = ["Jan", "Feb", "Mar"];
   const tableData = {
@@ -53,25 +51,25 @@ const BubbleSort = () => {
     ],
   };
 
-  let counter = 0;
-
   return (
     <Box>
       <h2>Bubble Sort!!!</h2>
-      <Bar redraw data={tableData} />
+      <Bar key={key} redraw data={tableData} />
       <Button
         onClick={() => {
-          if (counter === 0) {
-            let temp = colours;
-            temp[counter] = "blue";
-            setColours(temp);
-          }
+          // if (counter === 0) {
+          let temp = colours;
+          temp[counter] = "blue";
+          setColours(temp);
+          // }
           let tempData = data;
           let tempHolder = tempData[counter + 1];
           tempData[counter + 1] = tempData[counter];
           tempData[counter] = tempHolder;
           setData(tempData);
-          counter++;
+          setCounter(counter + 1);
+          console.log(counter);
+          setKey(Math.random());
         }}
       >
         Click me

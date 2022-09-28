@@ -10,8 +10,12 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import { generateColours, generateData } from "../../helper/generateData";
-import { sortingDelay } from "../../consts/graphConsts";
+import {
+  generateColours,
+  generateData,
+  generateLabels,
+} from "../../helper/generateData";
+import { graphOptions, sortingDelay } from "../../consts/graphConsts";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -28,26 +32,20 @@ ChartJS.register(
 // TODO: Show % sorted somewhere?
 
 const BubbleSort = () => {
-  const [dataValues, setDataValues] = useState(3);
+  const [dataValues, setDataValues] = useState(100);
   const [colours, setColours] = useState(generateColours(dataValues));
   const [data, setData] = useState(generateData(dataValues));
   const [key, setKey] = useState(0);
   const [counter, setCounter] = useState(0);
 
-  const labels = ["Jan", "Feb", "Mar"];
+  const labels = generateLabels(dataValues);
   const tableData = {
     labels: labels,
     datasets: [
       {
-        label: "My First Dataset",
+        label: "Bubble Sort", // TODO: Hide this title later anyway
         data: data,
         backgroundColor: colours,
-        borderColor: [
-          "rgb(255, 99, 132)",
-          "rgb(255, 159, 64)",
-          "rgb(255, 205, 86)",
-        ],
-        borderWidth: 1,
       },
     ],
   };
@@ -65,23 +63,44 @@ const BubbleSort = () => {
   };
 
   // TODO: Highlight columns being compared. Also change colour of finalised sorting (i.e. values that don't need to be moved again)
+
+  // TODO: maybe I should even set the colour 1 furhter forward, you can see it is trailing behind still
   const bubbleSort = async () => {
     for (let i = 0; i < data.length - 1; i++) {
-      for (let j = 0; j < data.length - i - j; j++) {
+      for (let j = 0; j < data.length - i - 1; j++) {
         if (data[j] > data[j + 1]) {
           swap(data, setData, j, j + 1);
           setKey(Math.random());
           await new Promise((r) => setTimeout(r, sortingDelay));
-          console.log("Sorting");
         }
+
+        // TODO: Fix colours not being correctly set for the last two values
+        let temp = colours;
+        if (j + 2 < data.length) {
+          temp[j + 2] = "green";
+        }
+
+        // -1 because we don't want to reset the values colour back
+        if (j + 1 < data.length - 1) {
+          temp[j + 1] = "red";
+        }
+        setColours(temp);
       }
     }
   };
 
+  // TODO: anyway to fix the flashing? i.e. a fast refresh that isn't cheesed with updating key
+
+  // TODO: Remove grid, remove axis, remove title at top
+
+  // TODO: Prevent button from being spam clicked
+  // TODO: Prevent hitting reset will animating (or stop and fix)
+
+  // TODO: reset button that fetches new data
   return (
     <Box>
       <Heading>Bubble Sort!!!</Heading>
-      <Bar key={key} redraw data={tableData} />
+      <Bar key={key} redraw data={tableData} options={graphOptions} />
       <Button
         onClick={() => {
           // // if (counter === 0) {
@@ -101,6 +120,15 @@ const BubbleSort = () => {
         }}
       >
         Click me
+      </Button>
+      <Button
+        onClick={() => {
+          setData(generateData(dataValues));
+          setColours(generateColours(dataValues));
+          setKey(Math.random());
+        }}
+      >
+        Reset
       </Button>
     </Box>
   );

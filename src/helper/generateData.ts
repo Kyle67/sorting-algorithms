@@ -1,7 +1,7 @@
 export const generateData = (dataCount : number) => {
     let array : number[] = [];
     for (let i=0; i<dataCount; i++) {
-        array.push(Math.random())
+        array.push(Math.random());
     }
     return array;
 }
@@ -9,7 +9,16 @@ export const generateData = (dataCount : number) => {
 export const generateColours = (dataCount: number) => {
     let array : string[] = [];
     for (let i=0; i<dataCount; i++) {
-        array.push("rgba(255, 99, 132, 1)")
+        array.push("red");
+    }
+    return array;
+}
+
+// TODO: refactor this later, should be able to do it in one line
+export const generateLabels = (dataCount: number) => {
+    let array : string[] = [];
+    for (let i=0; i<dataCount; i++) {
+        array.push("");
     }
     return array;
 }

@@ -7,6 +7,8 @@ import Home from "./Home";
 import BubbleSort from "./SortingPages/BubbleSort";
 import QuickSort from "./SortingPages/QuickSort";
 
+// TODO: Play with styling of graphs, perhaps flip upside down (hanging from the top)? a dark mode would also be very nice
+
 export const App = () => (
   <ChakraProvider theme={theme}>
     <Router>

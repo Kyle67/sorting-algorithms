@@ -1,3 +1,5 @@
+import "../../styles/styles.css";
+
 import React, { useEffect, useState } from "react";
 import { Box, Button, Heading } from "@chakra-ui/react";
 import {
@@ -100,7 +102,15 @@ const BubbleSort = () => {
   return (
     <Box>
       <Heading>Bubble Sort!!!</Heading>
-      <Bar key={key} redraw data={tableData} options={graphOptions} />
+      <Box>
+        <Bar
+          style={{ height: "300px", width: "100%" }}
+          key={key}
+          redraw
+          data={tableData}
+          options={graphOptions}
+        />
+      </Box>
       <Button
         onClick={() => {
           // // if (counter === 0) {

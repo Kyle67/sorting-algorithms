@@ -18,6 +18,7 @@ import {
   generateLabels,
 } from "../../helper/generateData";
 import { graphOptions, sortingDelay } from "../../consts/graphConsts";
+import CustomTable from "../../components/CustomTable";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -102,15 +103,7 @@ const BubbleSort = () => {
   return (
     <Box>
       <Heading>Bubble Sort!!!</Heading>
-      <Box>
-        <Bar
-          style={{ height: "300px", width: "100%" }}
-          key={key}
-          redraw
-          data={tableData}
-          options={graphOptions}
-        />
-      </Box>
+      <CustomTable data={data} colours={colours} />
       <Button
         onClick={() => {
           // // if (counter === 0) {

@@ -1,24 +1,31 @@
 import "../../styles/styles.css";
 
-import React, { useEffect, useState } from "react";
-import { Box, Button, Heading, useBoolean } from "@chakra-ui/react";
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Input,
+  Text,
+  useBoolean,
+} from "@chakra-ui/react";
+import {
   BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
   Title,
   Tooltip,
-  Legend,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
+import { useEffect, useState } from "react";
+import CustomTable from "../../components/CustomTable";
+import { sortingDelay } from "../../consts/graphConsts";
 import {
   generateColours,
   generateData,
   generateLabels,
 } from "../../helper/generateData";
-import { graphOptions, sortingDelay } from "../../consts/graphConsts";
-import CustomTable from "../../components/CustomTable";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -37,13 +44,19 @@ ChartJS.register(
 // TODO: Allow the timer to be set on the front end
 
 const BubbleSort = () => {
-  const [dataValues, setDataValues] = useState(100);
+  const [dataValues, setDataValues] = useState(100); // Number of data entries to have
   const [colours, setColours] = useState(generateColours(dataValues));
   const [data, setData] = useState(generateData(dataValues));
   const [disabled, setDisabled] = useBoolean();
   const [key, setKey] = useState(0);
 
   const labels = generateLabels(dataValues);
+
+  useEffect(() => {
+    // generate new data length
+    setData(generateData(dataValues));
+    setColours(generateColours(dataValues));
+  }, [dataValues]);
 
   const swap = (
     data: number[],
@@ -108,6 +121,20 @@ const BubbleSort = () => {
   return (
     <Box>
       <Heading>Bubble Sort!!!</Heading>
+      <Flex>
+        <Flex>
+          <Text>Number of Data entries</Text>
+          <Input
+            value={dataValues}
+            onChange={(text) => {
+              const numRegex = /^[0-9\b]+$/; // TODO: Check this regex
+              if (numRegex.test(text.target.value))
+                setDataValues(+text.target.value);
+            }}
+            placeholder="No. of data entries"
+          />
+        </Flex>
+      </Flex>
       <CustomTable data={data} colours={colours} />
       <Button
         disabled={disabled}

@@ -1,7 +1,7 @@
 import "../../styles/styles.css";
 
 import React, { useEffect, useState } from "react";
-import { Box, Button, Heading } from "@chakra-ui/react";
+import { Box, Button, Heading, useBoolean } from "@chakra-ui/react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -40,6 +40,7 @@ const BubbleSort = () => {
   const [dataValues, setDataValues] = useState(100);
   const [colours, setColours] = useState(generateColours(dataValues));
   const [data, setData] = useState(generateData(dataValues));
+  const [disabled, setDisabled] = useBoolean();
   const [key, setKey] = useState(0);
 
   const labels = generateLabels(dataValues);
@@ -60,6 +61,7 @@ const BubbleSort = () => {
 
   // TODO: maybe I should even set the colour 1 furhter forward, you can see it is trailing behind still
   const bubbleSort = async () => {
+    setDisabled.on();
     for (let i = 0; i < data.length - 1; i++) {
       for (let j = 0; j < data.length - i - 1; j++) {
         if (data[j] > data[j + 1]) {
@@ -87,6 +89,7 @@ const BubbleSort = () => {
     temp[0] = "green";
     setColours(temp);
     setKey(Math.random());
+    setDisabled.off();
   };
 
   // TODO: anyway to fix the flashing? i.e. a fast refresh that isn't cheesed with updating key
@@ -106,8 +109,16 @@ const BubbleSort = () => {
     <Box>
       <Heading>Bubble Sort!!!</Heading>
       <CustomTable data={data} colours={colours} />
-      <Button onClick={bubbleSort}>Click me</Button>
       <Button
+        disabled={disabled}
+        onClick={() => {
+          bubbleSort();
+        }}
+      >
+        Click me
+      </Button>
+      <Button
+        disabled={disabled}
         onClick={() => {
           setData(generateData(dataValues));
           setColours(generateColours(dataValues));

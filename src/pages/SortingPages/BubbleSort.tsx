@@ -45,12 +45,12 @@ ChartJS.register(
 
 const BubbleSort = () => {
   const [dataValues, setDataValues] = useState(100); // Number of data entries to have
+  const [sortSpeed, setSortSpeed] = useState(sortingDelay);
   const [colours, setColours] = useState(generateColours(dataValues));
   const [data, setData] = useState(generateData(dataValues));
   const [disabled, setDisabled] = useBoolean();
   const [key, setKey] = useState(0);
-
-  const labels = generateLabels(dataValues);
+  const numRegex = /^[0-9\b]+$/; // TODO: Check this regex
 
   useEffect(() => {
     // generate new data length
@@ -80,7 +80,9 @@ const BubbleSort = () => {
         if (data[j] > data[j + 1]) {
           swap(data, setData, j, j + 1);
           setKey(Math.random());
-          await new Promise((r) => setTimeout(r, sortingDelay));
+          console.log(sortSpeed);
+          if (sortSpeed !== 0)
+            await new Promise((r) => setTimeout(r, sortSpeed));
         }
 
         // TODO: Need to colour the next bar otherwise it looks a little odd
@@ -121,17 +123,27 @@ const BubbleSort = () => {
   return (
     <Box>
       <Heading>Bubble Sort!!!</Heading>
-      <Flex>
+      <Flex flexDir="column">
         <Flex>
           <Text>Number of Data entries</Text>
           <Input
             value={dataValues}
             onChange={(text) => {
-              const numRegex = /^[0-9\b]+$/; // TODO: Check this regex
               if (numRegex.test(text.target.value))
                 setDataValues(+text.target.value);
             }}
             placeholder="No. of data entries"
+          />
+        </Flex>
+        <Flex>
+          <Text>Sort Speed Delay</Text>
+          <Input
+            placeholder="Sorting speed"
+            value={sortSpeed}
+            onChange={(text) => {
+              if (numRegex.test(text.target.value))
+                setSortSpeed(+text.target.value);
+            }}
           />
         </Flex>
       </Flex>

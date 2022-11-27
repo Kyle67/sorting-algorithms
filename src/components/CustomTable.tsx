@@ -1,10 +1,11 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 
 interface CustomTableProps {
   data: number[];
   colours: string[];
 }
 
+// Custom table to display the data based on data & colours provided
 function CustomTable({ data, colours }: CustomTableProps) {
   const maxHeight = 500;
 

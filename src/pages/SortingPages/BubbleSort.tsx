@@ -34,24 +34,15 @@ ChartJS.register(
 
 // TODO: Show % sorted somewhere?
 
+// TODO: Allow the timer to be set on the front end
+
 const BubbleSort = () => {
   const [dataValues, setDataValues] = useState(100);
   const [colours, setColours] = useState(generateColours(dataValues));
   const [data, setData] = useState(generateData(dataValues));
   const [key, setKey] = useState(0);
-  const [counter, setCounter] = useState(0);
 
   const labels = generateLabels(dataValues);
-  const tableData = {
-    labels: labels,
-    datasets: [
-      {
-        label: "Bubble Sort", // TODO: Hide this title later anyway
-        data: data,
-        backgroundColor: colours,
-      },
-    ],
-  };
 
   const swap = (
     data: number[],
@@ -77,19 +68,25 @@ const BubbleSort = () => {
           await new Promise((r) => setTimeout(r, sortingDelay));
         }
 
-        // TODO: Fix colours not being correctly set for the last two values
+        // TODO: Need to colour the next bar otherwise it looks a little odd
+
+        // // TODO: Fix colours not being correctly set for the last two values
         let temp = colours;
-        if (j + 2 < data.length) {
-          temp[j + 2] = "green";
+        if (j + 1 < data.length) {
+          temp[j + 1] = "green";
         }
 
         // -1 because we don't want to reset the values colour back
-        if (j + 1 < data.length - 1) {
-          temp[j + 1] = "red";
+        if (j < data.length - 1) {
+          temp[j] = "red";
         }
         setColours(temp);
       }
     }
+    let temp = colours;
+    temp[0] = "green";
+    setColours(temp);
+    setKey(Math.random());
   };
 
   // TODO: anyway to fix the flashing? i.e. a fast refresh that isn't cheesed with updating key
@@ -100,30 +97,16 @@ const BubbleSort = () => {
   // TODO: Prevent hitting reset will animating (or stop and fix)
 
   // TODO: reset button that fetches new data
+
+  // TODO: Reset should stop sorting
+
+  // TODO: Disabled click me button once clicked
+  // TODO: Add a pause button? (maybe a play button too?)
   return (
     <Box>
       <Heading>Bubble Sort!!!</Heading>
       <CustomTable data={data} colours={colours} />
-      <Button
-        onClick={() => {
-          // // if (counter === 0) {
-          // let temp = colours;
-          // temp[counter] = "blue";
-          // setColours(temp);
-          // // }
-          // let tempData = data;
-          // let tempHolder = tempData[counter + 1];
-          // tempData[counter + 1] = tempData[counter];
-          // tempData[counter] = tempHolder;
-          // setData(tempData);
-          // setCounter(counter + 1);
-          // console.log(counter);
-          // setKey(Math.random());
-          bubbleSort();
-        }}
-      >
-        Click me
-      </Button>
+      <Button onClick={bubbleSort}>Click me</Button>
       <Button
         onClick={() => {
           setData(generateData(dataValues));

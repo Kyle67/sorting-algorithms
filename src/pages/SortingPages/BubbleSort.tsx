@@ -75,12 +75,12 @@ const BubbleSort = () => {
   // TODO: maybe I should even set the colour 1 furhter forward, you can see it is trailing behind still
   const bubbleSort = async () => {
     setDisabled.on();
+
     for (let i = 0; i < data.length - 1; i++) {
       for (let j = 0; j < data.length - i - 1; j++) {
         if (data[j] > data[j + 1]) {
           swap(data, setData, j, j + 1);
           setKey(Math.random());
-          console.log(sortSpeed);
           if (sortSpeed !== 0)
             await new Promise((r) => setTimeout(r, sortSpeed));
         }
@@ -100,6 +100,7 @@ const BubbleSort = () => {
         setColours(temp);
       }
     }
+
     let temp = colours;
     temp[0] = "green";
     setColours(temp);
@@ -118,7 +119,6 @@ const BubbleSort = () => {
 
   // TODO: Reset should stop sorting
 
-  // TODO: Disabled click me button once clicked
   // TODO: Add a pause button? (maybe a play button too?)
   return (
     <Box>
@@ -133,6 +133,7 @@ const BubbleSort = () => {
                 setDataValues(+text.target.value);
             }}
             placeholder="No. of data entries"
+            w="100px"
           />
         </Flex>
         <Flex>
@@ -144,6 +145,7 @@ const BubbleSort = () => {
               if (numRegex.test(text.target.value))
                 setSortSpeed(+text.target.value);
             }}
+            w="100px"
           />
         </Flex>
       </Flex>
@@ -157,7 +159,6 @@ const BubbleSort = () => {
         Click me
       </Button>
       <Button
-        disabled={disabled}
         onClick={() => {
           setData(generateData(dataValues));
           setColours(generateColours(dataValues));
